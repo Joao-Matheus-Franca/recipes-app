@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SearchBar from './SearchBar';
 import image from '../images/searchIcon.svg';
 
 export default function SearchBtn() {
@@ -15,7 +16,7 @@ export default function SearchBtn() {
       >
         <img src={ image } alt="search-top" />
       </button>
-      { state && (<input data-testid="search-input" type="text" />) }
+      { state && (<SearchBar />) }
     </>
   );
 }
