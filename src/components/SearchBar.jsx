@@ -25,27 +25,27 @@ function SearchBar() {
           setSearchBar({ ...searchBar, type: value })
         ) }
       >
-        Ingrediente
         <input
           name="search"
           data-testid="ingredient-search-radio"
           type="radio"
           value="Ingrediente"
         />
-        Nome
+        Ingrediente
         <input
           name="search"
           data-testid="name-search-radio"
           type="radio"
           value="Nome"
         />
-        Primeira letra
+        Nome
         <input
           name="search"
           data-testid="first-letter-search-radio"
           type="radio"
           value="Primeira letra"
         />
+        Primeira letra
       </label>
       <button
         data-testid="exec-search-btn"

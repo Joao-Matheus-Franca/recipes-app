@@ -15,8 +15,10 @@ function App() {
     <Switch>
       <Provider>
         <Route exact path="/" component={ Login } />
-        <Route path="/meals" component={ Meals } />
-        <Route path="/drinks" component={ Drinks } />
+        <Route exact path="/meals" component={ Meals } />
+        <Route path="/meals/:id" component={ Meals } />
+        <Route exact path="/drinks" component={ Drinks } />
+        <Route path="/drinks/:id" component={ Drinks } />
         <Route path="/profile" component={ Profile } />
         <Route path="/done-recipes" component={ DoneRecipes } />
         <Route path="/favorite-recipes" component={ FavoriteRecipes } />
