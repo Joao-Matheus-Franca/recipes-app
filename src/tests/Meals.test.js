@@ -3,17 +3,28 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import Meals from '../pages/Meals';
+import Context from '../context.js/Context';
 
 describe('Testando se a página de Meals', () => {
+  const teste = { setLocal: () => console.log('Meals') };
+
   it('Tem o título correto', () => {
-    renderWithRouter(<Meals />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Meals />
+      </Context.Provider>,
+    );
 
     const title = screen.getByRole('heading', { name: /meals/i });
     expect(title).toBeInTheDocument();
   });
 
   it('Tem dois botões', () => {
-    renderWithRouter(<Meals />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Meals />
+      </Context.Provider>,
+    );
 
     const btnProfile = screen.getByTestId('profile-top-btn');
     const btnSearch = screen.getByTestId('search-top-btn');
@@ -22,7 +33,11 @@ describe('Testando se a página de Meals', () => {
   });
 
   it('Funcionalidade do botão de profile', () => {
-    const { history } = renderWithRouter(<Meals />);
+    const { history } = renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Meals />
+      </Context.Provider>,
+    );
 
     const btnProfile = screen.getByTestId('profile-top-btn');
     expect(btnProfile).toBeInTheDocument();
@@ -34,7 +49,11 @@ describe('Testando se a página de Meals', () => {
   });
 
   it('Funcionalidade do botão de search', () => {
-    renderWithRouter(<Meals />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Meals />
+      </Context.Provider>,
+    );
 
     const btnTopSearch = screen.getByTestId('search-top-btn');
     expect(btnTopSearch).toBeInTheDocument();
@@ -55,8 +74,5 @@ describe('Testando se a página de Meals', () => {
 
     const btnExcBuscar = screen.getByTestId('exec-search-btn');
     expect(btnExcBuscar).toBeInTheDocument();
-
-    // userEvent.click(btnExcBuscar);
-    // expect(global.fetch).toBeCalled();
   });
 });

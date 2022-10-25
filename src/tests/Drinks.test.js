@@ -3,17 +3,28 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import Drinks from '../pages/Drinks';
+import Context from '../context.js/Context';
 
 describe('Testando se a página de Meals', () => {
+  const teste = { setLocal: () => console.log('Drinks') };
+
   it('Tem o título correto', () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Drinks />
+      </Context.Provider>,
+    );
 
     const title = screen.getByRole('heading', { name: /drinks/i });
     expect(title).toBeInTheDocument();
   });
 
   it('Tem dois botões', () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Drinks />
+      </Context.Provider>,
+    );
 
     const btnProfile = screen.getByTestId('profile-top-btn');
     const btnSearch = screen.getByTestId('search-top-btn');
@@ -22,7 +33,11 @@ describe('Testando se a página de Meals', () => {
   });
 
   it('Funcionalidade do botão de profile', () => {
-    const { history } = renderWithRouter(<Drinks />);
+    const { history } = renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Drinks />
+      </Context.Provider>,
+    );
 
     const btnProfile = screen.getByTestId('profile-top-btn');
     expect(btnProfile).toBeInTheDocument();
@@ -34,7 +49,11 @@ describe('Testando se a página de Meals', () => {
   });
 
   it('Funcionalidade do botão de search', () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <Context.Provider value={ teste }>
+        <Drinks />
+      </Context.Provider>,
+    );
 
     const btnTopSearch = screen.getByTestId('search-top-btn');
     expect(btnTopSearch).toBeInTheDocument();
