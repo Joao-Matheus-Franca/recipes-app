@@ -55,5 +55,8 @@ describe('Testando se a página de Meals', () => {
 
     const btnExcBuscar = screen.getByTestId('exec-search-btn');
     expect(btnExcBuscar).toBeInTheDocument();
+
+    // userEvent.click(btnExcBuscar);
+    // expect(global.fetch).toBeCalled();
   });
 });

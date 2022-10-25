@@ -6,9 +6,10 @@ function SearchBar() {
   const {
     searchBar,
     setSearchBar,
-    fetchSearchMeal,
+    fetchSearchMeals,
+    fetchSearchDrinks,
+    local,
   } = useContext(Context);
-
   return (
     <>
       <input
@@ -52,8 +53,10 @@ function SearchBar() {
         onClick={ () => {
           if (searchBar.type === 'Primeira letra' && searchBar.searchValue.length > 1) {
             global.alert('Your search must have only 1 (one) character');
-          } else {
-            fetchSearchMeal(searchBar);
+          } else if (local === 'Meals') {
+            fetchSearchMeals(searchBar);
+          } else if (local === 'Drinks') {
+            fetchSearchDrinks(searchBar);
           }
         } }
       >
