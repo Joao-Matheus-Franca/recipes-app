@@ -30,24 +30,20 @@ function Recipes() {
   };
 
   const fetchCategory = async (category) => {
-    if (local === 'Meals') {
+    if (local === 'Meals' && toggle !== category) {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
       const data = await response.json();
       setState(data.meals);
-      setToggle(category);
+      return setToggle(category);
     }
-    if (local === 'Meals' && toggle === category) {
-      fetchRecipes(local);
-    }
-    if (local === 'Drinks') {
+    if (local === 'Drinks' && toggle !== category) {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
       const data = await response.json();
       setState(data.drinks);
-      setToggle(category);
+      return setToggle(category);
     }
-    if (local === 'Drinks' && toggle === category) {
-      fetchRecipes(local);
-    }
+    setToggle('');
+    fetchRecipes(local);
   };
 
   useEffect(() => { fetchRecipes(local); }, [local]);
