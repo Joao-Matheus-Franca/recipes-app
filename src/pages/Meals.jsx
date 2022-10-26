@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import ProfileBtn from '../components/ProfileBtn';
 import SearchBtn from '../components/SearchBtn';
 import Context from '../context.js/Context';
+import Footer from '../components/Footer';
 
 export default function Meals(props) {
   const { setLocal, dataSearch } = useContext(Context);
@@ -44,6 +45,7 @@ export default function Meals(props) {
                 alt={ `Imagem do prato${m.strMeal}` }
               />
             </div>)) }
+        <Footer />
       </Header>
     </div>
   );
