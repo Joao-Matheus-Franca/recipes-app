@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Recipes from '../components/Recipes';
 import renderWithContext from './helpers/renderWithContext';
 
@@ -32,10 +33,23 @@ describe('Testes do componente Recipes', () => {
       json: () => Promise.resolve(mockMeals),
     }));
 
-    renderWithContext(<Recipes />, contextMeals);
+    renderWithContext((<Recipes />), contextMeals);
 
     const categoryButton = await screen.findByText('Fast Food');
     expect(categoryButton).toBeInTheDocument();
+    userEvent.click(categoryButton);
+  });
+
+  test('Teste de renderizaçãos dos elementos com a função All', async () => {
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve({ ...mockMeals }),
+    }));
+
+    renderWithContext(<Recipes />, contextMeals);
+
+    const allButton = await screen.findByText('All');
+    expect(allButton).toBeInTheDocument();
+    userEvent.click(allButton);
   });
 
   test('Teste de renderizaçãos dos elementos na página Drinks', async () => {
@@ -47,5 +61,6 @@ describe('Testes do componente Recipes', () => {
 
     const categoryButton = await screen.findByText('Fast Food');
     expect(categoryButton).toBeInTheDocument();
+    userEvent.click(categoryButton);
   });
 });

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Context from '../context.js/Context';
 
 function Recipes() {
@@ -7,6 +8,8 @@ function Recipes() {
   const [state, setState] = useState([]);
 
   const [categories, setCategories] = useState([]);
+
+  const [toggle, setToggle] = useState('');
 
   const fetchRecipes = async (page) => {
     if (page === 'Meals') {
@@ -31,11 +34,19 @@ function Recipes() {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
       const data = await response.json();
       setState(data.meals);
+      setToggle(category);
+    }
+    if (local === 'Meals' && toggle === category) {
+      fetchRecipes(local);
     }
     if (local === 'Drinks') {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
       const data = await response.json();
       setState(data.drinks);
+      setToggle(category);
+    }
+    if (local === 'Drinks' && toggle === category) {
+      fetchRecipes(local);
     }
   };
 
@@ -64,24 +75,32 @@ function Recipes() {
         All
       </button>
       { local === 'Meals' ? state.filter((_, i) => i < maxNumber).map((r, i) => (
-        <div key={ r.idMeal } data-testid={ `${i}-recipe-card` }>
+        <Link
+          key={ r.idMeal }
+          data-testid={ `${i}-recipe-card` }
+          to={ `/meals/${r.idMeal}` }
+        >
           <h3 data-testid={ `${i}-card-name` }>{r.strMeal}</h3>
           <img
             data-testid={ `${i}-card-img` }
             src={ r.strMealThumb }
             alt={ `Imagem do prato${r.strMeal}` }
           />
-        </div>
+        </Link>
       )) : state.filter((_, i) => i < maxNumber)
         .map((m, i) => (
-          <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
+          <Link
+            key={ m.idDrink }
+            data-testid={ `${i}-recipe-card` }
+            to={ `/drinks/${m.idDrink}` }
+          >
             <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
             <img
               data-testid={ `${i}-card-img` }
               src={ m.strDrinkThumb }
               alt={ `Imagem do prato${m.strDrink}` }
             />
-          </div>))}
+          </Link>))}
     </>
   );
 }
