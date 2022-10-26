@@ -5,6 +5,7 @@ import ProfileBtn from '../components/ProfileBtn';
 import SearchBtn from '../components/SearchBtn';
 import Context from '../context.js/Context';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
 
 export default function Drinks(props) {
   const { setLocal, dataSearch } = useContext(Context);
@@ -37,6 +38,7 @@ export default function Drinks(props) {
         <h1 data-testid="page-title"> Drinks </h1>
         <ProfileBtn />
         <SearchBtn />
+        <Recipes />
         { dataSearch.drinks && dataSearch.drinks
           .filter((_, i) => i < maxNumber)
           .map((m, i) => (
