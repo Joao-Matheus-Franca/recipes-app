@@ -19,6 +19,9 @@ export default function Drinks(props) {
       const path = `/drinks/${url}`;
       history.push(path);
     }
+    if (dataSearch.drinks === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
   }, [dataSearch]);
 
   const maxNumber = 12;

@@ -10,6 +10,9 @@ function SearchBar() {
     fetchSearchDrinks,
     local,
   } = useContext(Context);
+
+  console.log(local);
+
   return (
     <>
       <input
@@ -55,7 +58,7 @@ function SearchBar() {
             global.alert('Your search must have only 1 (one) character');
           } else if (local === 'Meals') {
             fetchSearchMeals(searchBar);
-          } else if (local === 'Drinks') {
+          } else {
             fetchSearchDrinks(searchBar);
           }
         } }

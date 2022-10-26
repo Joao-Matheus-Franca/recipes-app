@@ -2,6 +2,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
+import SearchBar from '../components/SearchBar';
+import renderWithContext from './helpers/renderWithContext';
 
 describe('Teste do componente SearchBar', () => {
   test('Teste das funcionalidades de buscar pela barra de pesquisa', () => {
@@ -41,6 +43,21 @@ describe('Teste do componente SearchBar', () => {
     userEvent.clear(searchInput);
     userEvent.type(searchInput, 'pamonha');
     userEvent.click(inputSerachFirstLetter);
+    userEvent.click(searchButton);
+  });
+  test('Teste das funcionalidades de busca de Drinks', () => {
+    const value = {
+      searchBar: { type: 'Ingrediente', searchValue: 'Sugar' },
+      setSearchBar: (teste) => teste,
+      fetchSearchMeals: (teste) => teste,
+      fetchSearchDrinks: (teste) => teste,
+      local: 'Drinks',
+    };
+
+    renderWithContext(<SearchBar />, value);
+
+    const searchButton = screen.getByTestId('exec-search-btn');
+
     userEvent.click(searchButton);
   });
 });

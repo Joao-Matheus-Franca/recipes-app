@@ -20,6 +20,9 @@ export default function Meals(props) {
       const path = `/meals/${url}`;
       history.push(path);
     }
+    if (dataSearch.meals === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
   }, [dataSearch]);
 
   const { history } = props;
