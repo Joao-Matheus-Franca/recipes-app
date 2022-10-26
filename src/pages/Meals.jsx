@@ -25,11 +25,11 @@ export default function Meals(props) {
     }
   }, [dataSearch]);
 
-  const { history } = props;
+  const { history: { location: { pathname } } } = props;
 
   const maxNumber = 12;
 
-  console.log(history.location.pathname);
+  console.log(pathname);
 
   return (
     <div>
@@ -48,12 +48,12 @@ export default function Meals(props) {
                 alt={ `Imagem do prato${m.strMeal}` }
               />
             </div>)) }
-        <Footer />
       </Header>
+      { pathname === '/meals' && <Footer /> }
     </div>
   );
 }
 
 Meals.propTypes = {
-  history: PropTypes.objectOf.isRequired,
-};
+  history: PropTypes.shape({ location: PropTypes.shape({ pathname: PropTypes.string }) }),
+}.isRequired;
