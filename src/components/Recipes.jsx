@@ -26,6 +26,19 @@ function Recipes() {
     }
   };
 
+  const fetchCategory = async (category) => {
+    if (local === 'Meals') {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      const data = await response.json();
+      setState(data.meals);
+    }
+    if (local === 'Drinks') {
+      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
+      const data = await response.json();
+      setState(data.drinks);
+    }
+  };
+
   useEffect(() => { fetchRecipes(local); }, [local]);
 
   const maxNumber = 12;
@@ -38,10 +51,18 @@ function Recipes() {
           key={ c.strCategory }
           type="button"
           data-testid={ `${c.strCategory}-category-filter` }
+          onClick={ () => fetchCategory(c.strCategory) }
         >
           { c.strCategory }
         </button>
       )) }
+      <button
+        data-testid="All-category-filter"
+        type="button"
+        onClick={ () => fetchRecipes(local) }
+      >
+        All
+      </button>
       { local === 'Meals' ? state.filter((_, i) => i < maxNumber).map((r, i) => (
         <div key={ r.idMeal } data-testid={ `${i}-recipe-card` }>
           <h3 data-testid={ `${i}-card-name` }>{r.strMeal}</h3>
