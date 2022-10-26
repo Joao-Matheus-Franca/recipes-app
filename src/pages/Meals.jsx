@@ -38,18 +38,18 @@ export default function Meals(props) {
         <h1 data-testid="page-title"> Meals </h1>
         <ProfileBtn />
         <SearchBtn />
-        <Recipes />
-        { dataSearch.meals && dataSearch.meals
-          .filter((_, i) => i < maxNumber)
-          .map((m, i) => (
-            <div key={ m.idMeal } data-testid={ `${i}-recipe-card` }>
-              <h3 data-testid={ `${i}-card-name` }>{m.strMeal}</h3>
-              <img
-                data-testid={ `${i}-card-img` }
-                src={ m.strMealThumb }
-                alt={ `Imagem do prato${m.strMeal}` }
-              />
-            </div>)) }
+        { dataSearch.length === 0 ? <Recipes />
+          : dataSearch.meals && dataSearch.meals
+            .filter((_, i) => i < maxNumber)
+            .map((m, i) => (
+              <div key={ m.idMeal } data-testid={ `${i}-recipe-card` }>
+                <h3 data-testid={ `${i}-card-name` }>{m.strMeal}</h3>
+                <img
+                  data-testid={ `${i}-card-img` }
+                  src={ m.strMealThumb }
+                  alt={ `Imagem do prato${m.strMeal}` }
+                />
+              </div>))}
       </Header>
       { pathname === '/meals' && <Footer /> }
     </div>

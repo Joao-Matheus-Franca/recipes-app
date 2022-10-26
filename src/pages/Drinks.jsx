@@ -38,18 +38,18 @@ export default function Drinks(props) {
         <h1 data-testid="page-title"> Drinks </h1>
         <ProfileBtn />
         <SearchBtn />
-        <Recipes />
-        { dataSearch.drinks && dataSearch.drinks
-          .filter((_, i) => i < maxNumber)
-          .map((m, i) => (
-            <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
-              <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
-              <img
-                data-testid={ `${i}-card-img` }
-                src={ m.strDrinkThumb }
-                alt={ `Imagem do prato${m.strDrink}` }
-              />
-            </div>)) }
+        { dataSearch.length === 0 ? <Recipes />
+          : dataSearch.drinks && dataSearch.drinks
+            .filter((_, i) => i < maxNumber)
+            .map((m, i) => (
+              <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
+                <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
+                <img
+                  data-testid={ `${i}-card-img` }
+                  src={ m.strDrinkThumb }
+                  alt={ `Imagem do prato${m.strDrink}` }
+                />
+              </div>))}
       </Header>
       { pathname === '/drinks' && <Footer /> }
     </div>
