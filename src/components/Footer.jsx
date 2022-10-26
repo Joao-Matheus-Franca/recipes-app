@@ -6,12 +6,12 @@ import '../styles/footer.css';
 function Footer() {
   return (
     <footer data-testid="footer">
-      <Link to="/meals">
+      <Link to="/drinks">
         <button type="button">
           <img src={ drinkIcon } alt="mealIcon" data-testid="drinks-bottom-btn" />
         </button>
       </Link>
-      <Link to="/drinks">
+      <Link to="/meals">
         <button type="button">
           <img src={ mealIcon } alt="drinkIcon" data-testid="meals-bottom-btn" />
         </button>

@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import ProfileBtn from '../components/ProfileBtn';
 import SearchBtn from '../components/SearchBtn';
 import Context from '../context.js/Context';
+import Footer from '../components/Footer';
 
 export default function Drinks(props) {
   const { setLocal, dataSearch } = useContext(Context);
@@ -24,9 +25,11 @@ export default function Drinks(props) {
     }
   }, [dataSearch]);
 
+  const { history: { location: { pathname } } } = props;
+
   const maxNumber = 12;
 
-  console.log(dataSearch);
+  console.log(pathname);
 
   return (
     <div>
@@ -46,10 +49,11 @@ export default function Drinks(props) {
               />
             </div>)) }
       </Header>
+      { pathname === '/drinks' && <Footer /> }
     </div>
   );
 }
 
 Drinks.propTypes = {
-  history: PropTypes.objectOf.isRequired,
-};
+  history: PropTypes.shape({ location: PropTypes.shape({ pathname: PropTypes.string }) }),
+}.isRequired;
