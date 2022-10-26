@@ -8,7 +8,7 @@ import Context from '../context.js/Context';
 export default function Drinks(props) {
   const { setLocal, dataSearch } = useContext(Context);
 
-  useEffect(() => setLocal('Drinks'));
+  useEffect(() => setLocal('Drinks'), []);
 
   useEffect(() => {
     let url = null;
@@ -19,7 +19,14 @@ export default function Drinks(props) {
       const path = `/drinks/${url}`;
       history.push(path);
     }
-  }, [dataSearch, props]);
+    if (dataSearch.drinks === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+  }, [dataSearch]);
+
+  const maxNumber = 12;
+
+  console.log(dataSearch);
 
   return (
     <div>
@@ -27,6 +34,17 @@ export default function Drinks(props) {
         <h1 data-testid="page-title"> Drinks </h1>
         <ProfileBtn />
         <SearchBtn />
+        { dataSearch.drinks && dataSearch.drinks
+          .filter((_, i) => i < maxNumber)
+          .map((m, i) => (
+            <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
+              <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
+              <img
+                data-testid={ `${i}-card-img` }
+                src={ m.strDrinkThumb }
+                alt={ `Imagem do prato${m.strDrink}` }
+              />
+            </div>)) }
       </Header>
     </div>
   );

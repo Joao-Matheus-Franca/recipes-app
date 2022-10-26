@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 export default function Meals(props) {
   const { setLocal, dataSearch } = useContext(Context);
 
-  useEffect(() => setLocal('Meals'));
+  useEffect(() => setLocal('Meals'), []);
 
   useEffect(() => {
     let url = null;
@@ -20,7 +20,16 @@ export default function Meals(props) {
       const path = `/meals/${url}`;
       history.push(path);
     }
-  }, [dataSearch, props]);
+    if (dataSearch.meals === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+  }, [dataSearch]);
+
+  const { history } = props;
+
+  const maxNumber = 12;
+
+  console.log(history.location.pathname);
 
   return (
     <div>
@@ -28,6 +37,17 @@ export default function Meals(props) {
         <h1 data-testid="page-title"> Meals </h1>
         <ProfileBtn />
         <SearchBtn />
+        { dataSearch.meals && dataSearch.meals
+          .filter((_, i) => i < maxNumber)
+          .map((m, i) => (
+            <div key={ m.idMeal } data-testid={ `${i}-recipe-card` }>
+              <h3 data-testid={ `${i}-card-name` }>{m.strMeal}</h3>
+              <img
+                data-testid={ `${i}-card-img` }
+                src={ m.strMealThumb }
+                alt={ `Imagem do prato${m.strMeal}` }
+              />
+            </div>)) }
         <Footer />
       </Header>
     </div>
