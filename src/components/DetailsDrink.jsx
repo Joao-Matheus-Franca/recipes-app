@@ -1,46 +1,60 @@
+import PropTypes from 'prop-types';
+
 function DetailsDrink({ data }) {
-  Object.keys(data.drinks[0]).forEach((item) => {
-    if (data.drinks[0][item] === null || data.drinks[0][item] === '') {
-      delete data.drinks[0][item];
-    }
-  });
+  console.log(data);
+  const ingredientes = (initialData) => {
+    const recipes = Object.entries(initialData.drinks[0])
+      .filter(
+        ([key, value]) => (key.includes('strIngredient') || key.includes('strMeasure'))
+      && value && value !== ' ',
+      );
+    const item = recipes
+      .reduce((acc, [key, value]) => {
+        if (key.includes('strIngredient')) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+    const quantidade = recipes
+      .reduce((acc, [key, value]) => {
+        if (key.includes('strMeasure')) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+    return Object.values(item)
+      .map((e, i) => `${e} ${Object.values(quantidade)[i]}`);
+  };
 
-  const detailsData = data.drinks[0];
-
-  const ingredients = Object.entries(detailsData).filter((item) => item[0].includes('strIngredient'));
-
-  const measure = Object.entries(detailsData).filter((item) => item[0].includes('strMeasure'));
-
-  // .forEach((item) => {
-  //   if (item[0].includes('strIngredient') || item[0].includes('strMeasure')) {
-  //     ingredients.push(item[1]);
-  //   }
-  // });
-  console.log(data.drinks[0]);
-  console.log(detailsData);
-  console.log(ingredients);
-  console.log(measure);
+  const ingrediente = ingredientes(data);
 
   return (
     <>
-      <h1>DETAILS MEAL</h1>
+      <h1>DRINK DETAILS</h1>
       <img
         src={ data.drinks[0].strDrinkThumb }
         alt=""
         data-testid="recipe-photo"
         style={ { height: 150 } }
       />
-      <h2 data-testid="recipe-title">{ data.drinks[0].strMeal }</h2>
-      <p data-testid="recipe-category">{ data.drinks[0].strCategory }</p>
+      <h2 data-testid="recipe-title">{ data.drinks[0].strDrink }</h2>
+      <p data-testid="recipe-category">{ data.drinks[0].strAlcoholic }</p>
       <ul>
-        { ingredients.reduce((acc, curr) => {
-          console.log(curr[acc]);
-          return (acc + 1);
-        }, 0)}
+        { ingrediente.map((item, index) => (
+          <li
+            key={ index }
+            data-testid={ `${index}-ingredient-name-and-measure` }
+          >
+            { item }
+          </li>))}
       </ul>
       <p data-testid="instructions">{ data.drinks[0].strInstructions }</p>
     </>
   );
 }
+
+DetailsDrink.propTypes = {
+  data: PropTypes.shape({ meals: PropTypes.obj }),
+}.isRequired;
 
 export default DetailsDrink;

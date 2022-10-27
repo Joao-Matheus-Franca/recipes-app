@@ -1,4 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState,
+  useEffect,
+  // useRef
+} from 'react';
 import PropTypes from 'prop-types';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -17,13 +20,11 @@ function Details(props) {
     if (pathname.includes('drink')) {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
       const json = await response.json();
-      // data.current = json;
       setData(json);
       setIsLoading(false);
     } else {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const json = await response.json();
-      // data.current = json;
       setData(json);
       setIsLoading(false);
     }
@@ -33,6 +34,7 @@ function Details(props) {
     fetchData();
   }, []);
 
+  if (isLoading) return <p>Carregando...</p>;
   return (
     <div>
       <Header>
@@ -41,7 +43,7 @@ function Details(props) {
       </Header>
       <section>
         {
-          (isLoading) ? 'Carregando...' : (pathname.includes('drinks') && data) ? (
+          (pathname.includes('drinks') && data) ? (
             <DetailsDrink data={ data } />) : (<DetailsMeal data={ data } />)
         }
       </section>
