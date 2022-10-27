@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-function DetailsDrink({ data }) {
-  console.log(data);
+function DetailsDrink({ data, recomendedData }) {
+  console.log('recomendedData meal:', recomendedData);
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.drinks[0])
       .filter(
