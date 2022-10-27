@@ -8,7 +8,6 @@ function Provider({ children }) {
   const [local, setLocal] = useState('');
 
   const fetchSearchMeals = async (busca) => {
-    // console.log('busca:', busca);
     switch (busca.type) {
     case 'Ingrediente': {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${busca.searchValue}`);
