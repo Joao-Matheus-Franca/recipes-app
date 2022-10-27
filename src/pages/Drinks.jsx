@@ -5,6 +5,7 @@ import ProfileBtn from '../components/ProfileBtn';
 import SearchBtn from '../components/SearchBtn';
 import Context from '../context.js/Context';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
 
 export default function Drinks(props) {
   const { setLocal, dataSearch } = useContext(Context);
@@ -37,17 +38,18 @@ export default function Drinks(props) {
         <h1 data-testid="page-title"> Drinks </h1>
         <ProfileBtn />
         <SearchBtn />
-        { dataSearch.drinks && dataSearch.drinks
-          .filter((_, i) => i < maxNumber)
-          .map((m, i) => (
-            <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
-              <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
-              <img
-                data-testid={ `${i}-card-img` }
-                src={ m.strDrinkThumb }
-                alt={ `Imagem do prato${m.strDrink}` }
-              />
-            </div>)) }
+        { dataSearch.length === 0 ? <Recipes />
+          : dataSearch.drinks && dataSearch.drinks
+            .filter((_, i) => i < maxNumber)
+            .map((m, i) => (
+              <div key={ m.idDrink } data-testid={ `${i}-recipe-card` }>
+                <h3 data-testid={ `${i}-card-name` }>{m.strDrink}</h3>
+                <img
+                  data-testid={ `${i}-card-img` }
+                  src={ m.strDrinkThumb }
+                  alt={ `Imagem do prato${m.strDrink}` }
+                />
+              </div>))}
       </Header>
       { pathname === '/drinks' && <Footer /> }
     </div>
