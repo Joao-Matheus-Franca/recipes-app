@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
+import Recomendation from './Recomendation';
 
 function DetailsMeal({ data, recomendedData }) {
-  console.log('recomendedData meal:', recomendedData);
+  // console.log('recomendedData meal:', recomendedData);
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.meals[0])
       .filter(
@@ -56,6 +57,7 @@ function DetailsMeal({ data, recomendedData }) {
         height="315"
         data-testid="video"
       />
+      {recomendedData && <Recomendation recomendedData={ recomendedData.drinks } />}
     </>
   );
 }
