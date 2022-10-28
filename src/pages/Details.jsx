@@ -15,6 +15,7 @@ function Details(props) {
   // const data = useRef([]);
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [recomendedData, setRecomendedData] = useState();
 
   const fetchData = async () => {
     if (pathname.includes('drink')) {
@@ -30,8 +31,21 @@ function Details(props) {
     }
   };
 
+  const fetchRecommended = async () => {
+    if (pathname.includes('drink')) {
+      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      const json = await response.json();
+      setRecomendedData(json);
+    } else {
+      const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+      const json = await response.json();
+      setRecomendedData(json);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchRecommended();
   }, []);
 
   if (isLoading) return <p>Carregando...</p>;
@@ -44,7 +58,8 @@ function Details(props) {
       <section>
         {
           (pathname.includes('drinks') && data) ? (
-            <DetailsDrink data={ data } />) : (<DetailsMeal data={ data } />)
+            <DetailsDrink data={ data } recomendedData={ recomendedData } />
+          ) : (<DetailsMeal data={ data } recomendedData={ recomendedData } />)
         }
       </section>
       <Footer />
