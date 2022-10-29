@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import Recomendation from './Recomendation';
+import StartRecipe from './StartRecipe';
 
 function DetailsDrink({ data, recomendedData }) {
   // console.log('recomendedData meal:', recomendedData);
@@ -51,6 +52,7 @@ function DetailsDrink({ data, recomendedData }) {
       </ul>
       <p data-testid="instructions">{ data.drinks[0].strInstructions }</p>
       {recomendedData && <Recomendation recomendedData={ recomendedData.meals } />}
+      <StartRecipe />
     </>
   );
 }
