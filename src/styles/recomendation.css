@@ -1,0 +1,18 @@
+/* resolução da tela 360x640 */
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+  width: 360px;
+}
+
+.carousel_item {
+  width: 180px;
+}
+
+.carousel_item img {
+  width: 180px;
+}
+
+.btn_pass {
+  margin-bottom: 40px;
+}

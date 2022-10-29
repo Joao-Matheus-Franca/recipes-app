@@ -81,6 +81,7 @@ function Recipes() {
             data-testid={ `${i}-card-img` }
             src={ r.strMealThumb }
             alt={ `Imagem do prato${r.strMeal}` }
+            style={ { height: 150 } }
           />
         </Link>
       )) : state.filter((_, i) => i < maxNumber)
@@ -95,6 +96,7 @@ function Recipes() {
               data-testid={ `${i}-card-img` }
               src={ m.strDrinkThumb }
               alt={ `Imagem do prato${m.strDrink}` }
+              style={ { height: 150 } }
             />
           </Link>))}
     </>
