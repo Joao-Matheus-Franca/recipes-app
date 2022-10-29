@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import Recomendation from './Recomendation';
+import StartRecipe from './StartRecipe';
 
 function DetailsMeal({ data, recomendedData }) {
   // console.log('recomendedData meal:', recomendedData);
@@ -58,6 +59,7 @@ function DetailsMeal({ data, recomendedData }) {
         data-testid="video"
       />
       {recomendedData && <Recomendation recomendedData={ recomendedData.drinks } />}
+      <StartRecipe />
     </>
   );
 }
