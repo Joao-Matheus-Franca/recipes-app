@@ -10,6 +10,7 @@ import DetailsMeal from '../components/DetailsMeal';
 import DetailsDrink from '../components/DetailsDrink';
 
 function Details(props) {
+  console.log(props);
   const { match: { params: { id } } } = props;
   const { location: { pathname } } = props;
   // const data = useRef([]);

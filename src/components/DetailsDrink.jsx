@@ -30,6 +30,13 @@ function DetailsDrink({ data, recomendedData }) {
 
   const ingrediente = ingredientes(data);
 
+  // A seguinte linha será apagada após implementar o botão para finalizar recietas:
+  localStorage.setItem('doneRecipes', JSON.stringify([]));
+
+  const doneStorage = JSON.parse(localStorage.getItem('doneRecipes'));
+
+  console.log(data);
+
   return (
     <>
       <h1>DRINK DETAILS</h1>
@@ -52,7 +59,9 @@ function DetailsDrink({ data, recomendedData }) {
       </ul>
       <p data-testid="instructions">{ data.drinks[0].strInstructions }</p>
       {recomendedData && <Recomendation recomendedData={ recomendedData.meals } />}
-      <StartRecipe />
+      {!doneStorage
+        .find((r) => r.id === data.drinks[0].idDrink)
+        && (<StartRecipe id={ data.drinks[0].idDrink } local="drinks" />)}
     </>
   );
 }
