@@ -10,6 +10,7 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import Provider from './context.js/Provider';
 import RecipeDetails from './pages/RecipeDetails';
+import RecipeInProgress from './pages/RecipeInProgress';
 
 function App() {
   return (
@@ -17,11 +18,11 @@ function App() {
       <Provider>
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ Meals } />
-        <Route path="/meals/:id" component={ RecipeDetails } />
-        <Route path="/meals/:id/in-progress" component={ Meals } />
+        <Route exact path="/meals/:id" component={ RecipeDetails } />
+        <Route path="/meals/:id/in-progress" component={ RecipeInProgress } />
         <Route exact path="/drinks" component={ Drinks } />
-        <Route path="/drinks/:id" component={ RecipeDetails } />
-        <Route path="/drinks/:id/in-progress" component={ Drinks } />
+        <Route exact path="/drinks/:id" component={ RecipeDetails } />
+        <Route path="/drinks/:id/in-progress" component={ RecipeInProgress } />
         <Route path="/profile" component={ Profile } />
         <Route path="/done-recipes" component={ DoneRecipes } />
         <Route path="/favorite-recipes" component={ FavoriteRecipes } />
