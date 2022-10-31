@@ -14,7 +14,7 @@ export default function Profile() {
         <ProfileBtn />
       </Header>
       <main>
-        <p data-testid="profile-email">{ userEmail.email }</p>
+        {userEmail && <p data-testid="profile-email">{ userEmail.email }</p> }
         <Link to="/done-recipes">
           <button
             type="button"
