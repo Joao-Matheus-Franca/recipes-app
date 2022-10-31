@@ -30,7 +30,7 @@ export default function Profile() {
           type="button"
           data-testid="profile-logout-btn"
         >
-          Favorite Recipes
+          Logout
         </button>
       </main>
       <Footer />
