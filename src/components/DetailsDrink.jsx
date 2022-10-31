@@ -49,10 +49,16 @@ function DetailsDrink({ data, recomendedData, pathname }) {
     if (lastFavorites === null) {
       return localStorage.setItem('favoriteRecipes', JSON.stringify([object]));
     }
+    if (lastFavorites.find((r) => r.id === object.id)) {
+      return localStorage.setItem('favoriteRecipes', JSON.stringify(lastFavorites
+        .filter((r) => r.id !== object.id)));
+    }
     localStorage.setItem('favoriteRecipes', JSON.stringify([...lastFavorites, object]));
   };
 
   const favorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+  const [fav, setFav] = useState(false);
 
   console.log(data);
 
@@ -72,15 +78,18 @@ function DetailsDrink({ data, recomendedData, pathname }) {
         src={ (favorites && favorites.find((r) => r.id === data.drinks[0].idDrink))
           ? favorite : noFavorite }
         data-testid="favorite-btn"
-        onClick={ () => saveFavorites({
-          id: data.drinks[0].idDrink,
-          type: 'drink',
-          nationality: '',
-          category: data.drinks[0].strCategory,
-          alcoholicOrNot: data.drinks[0].strAlcoholic,
-          name: data.drinks[0].strDrink,
-          image: data.drinks[0].strDrinkThumb,
-        }) }
+        onClick={ () => {
+          saveFavorites({
+            id: data.drinks[0].idDrink,
+            type: 'drink',
+            nationality: '',
+            category: data.drinks[0].strCategory,
+            alcoholicOrNot: data.drinks[0].strAlcoholic,
+            name: data.drinks[0].strDrink,
+            image: data.drinks[0].strDrinkThumb,
+          });
+          setFav(!fav);
+        } }
       >
         { (favorites && favorites.find((r) => r.id === data.drinks[0].idDrink))
           ? <img src={ favorite } alt="Receita favoritada" />

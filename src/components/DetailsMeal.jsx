@@ -49,10 +49,16 @@ function DetailsMeal({ data, recomendedData, pathname }) {
     if (lastFavorites === null) {
       return localStorage.setItem('favoriteRecipes', JSON.stringify([object]));
     }
+    if (lastFavorites.find((r) => r.id === object.id)) {
+      return localStorage.setItem('favoriteRecipes', JSON.stringify(lastFavorites
+        .filter((r) => r.id !== object.id)));
+    }
     localStorage.setItem('favoriteRecipes', JSON.stringify([...lastFavorites, object]));
   };
 
   const favorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+  const [fav, setFav] = useState(false);
 
   return (
     <>
@@ -70,15 +76,18 @@ function DetailsMeal({ data, recomendedData, pathname }) {
         src={ (favorites && favorites.find((r) => r.id === data.meals[0].idMeal))
           ? favorite : noFavorite }
         data-testid="favorite-btn"
-        onClick={ () => saveFavorites({
-          id: data.meals[0].idMeal,
-          type: 'meal',
-          nationality: data.meals[0].strArea,
-          category: data.meals[0].strCategory,
-          alcoholicOrNot: '',
-          name: data.meals[0].strMeal,
-          image: data.meals[0].strMealThumb,
-        }) }
+        onClick={ () => {
+          saveFavorites({
+            id: data.meals[0].idMeal,
+            type: 'meal',
+            nationality: data.meals[0].strArea,
+            category: data.meals[0].strCategory,
+            alcoholicOrNot: '',
+            name: data.meals[0].strMeal,
+            image: data.meals[0].strMealThumb,
+          });
+          setFav(!fav);
+        } }
       >
         { (favorites && favorites.find((r) => r.id === data.meals[0].idMeal))
           ? <img src={ favorite } alt="Receita favoritada" />
