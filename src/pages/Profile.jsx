@@ -1,9 +1,11 @@
-import React from 'react';
+import { React } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import ProfileBtn from '../components/ProfileBtn';
 
 export default function Profile() {
+  const userEmail = JSON.parse(localStorage.getItem('user'));
+
   return (
     <div>
       <Header>
@@ -11,7 +13,7 @@ export default function Profile() {
         <ProfileBtn />
       </Header>
       <main>
-        <p data-testid="profile-email">EMAIL</p>
+        {userEmail && <p data-testid="profile-email">{ userEmail.email }</p>}
         <button
           type="button"
           data-testid="profile-done-btn"
