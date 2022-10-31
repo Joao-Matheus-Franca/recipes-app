@@ -59,8 +59,16 @@ function Details(props) {
       <section>
         {
           (pathname.includes('drinks') && data) ? (
-            <DetailsDrink data={ data } recomendedData={ recomendedData } />
-          ) : (<DetailsMeal data={ data } recomendedData={ recomendedData } />)
+            <DetailsDrink
+              data={ data }
+              recomendedData={ recomendedData }
+              pathname={ pathname }
+            />
+          ) : (<DetailsMeal
+            data={ data }
+            recomendedData={ recomendedData }
+            pathname={ pathname }
+          />)
         }
       </section>
       <Footer />
