@@ -120,7 +120,7 @@ export default function DrinksInProgress({ data, pathname }) {
         type="button"
         data-testid="finish-recipe-btn"
       >
-        Finish Recipe
+        Finish Recip
       </button>
     </div>
   );
