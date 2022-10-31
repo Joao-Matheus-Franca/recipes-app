@@ -66,7 +66,6 @@ export default function DrinksInProgress({ data, pathname }) {
         onClick={ () => {
           copy(`http://localhost:3000${pathname}`);
           setLink(true);
-          // setTimeout(() => setLink(false), time);
         } }
       >
         <img src={ shareImage } alt="Compartilhar" />
@@ -103,7 +102,7 @@ export default function DrinksInProgress({ data, pathname }) {
             <label
               htmlFor={ item }
               key={ index }
-              data-testid={ `${index}-ingredient-name-and-measure` }
+              data-testid={ `${index}-ingredient-step` }
             >
               <input type="checkbox" value={ item } id={ item } />
               { item }
@@ -120,7 +119,7 @@ export default function DrinksInProgress({ data, pathname }) {
         type="button"
         data-testid="finish-recipe-btn"
       >
-        Finish Recip
+        Finish Recipe
       </button>
     </div>
   );

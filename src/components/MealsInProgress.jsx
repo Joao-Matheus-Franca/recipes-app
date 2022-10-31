@@ -102,7 +102,7 @@ export default function MealsInProgress({ data, pathname }) {
             <label
               htmlFor={ item }
               key={ index }
-              data-testid={ `${index}-ingredient-name-and-measure` }
+              data-testid={ `${index}-ingredient-step` }
             >
               <input type="checkbox" value={ item } id={ item } />
               { item }
