@@ -6,6 +6,12 @@ import favorite from '../images/blackHeartIcon.svg';
 import noFavorite from '../images/whiteHeartIcon.svg';
 
 export default function MealsInProgress({ data, pathname }) {
+  const lineStyle = { textDecorationLine: 'line-through',
+    textDecorationColor: 'rgb(0,0,0)',
+    textDecorationStyle: 'solid' };
+
+  const [line, setLine] = useState([]);
+
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.meals[0])
       .filter(
@@ -97,20 +103,51 @@ export default function MealsInProgress({ data, pathname }) {
       <p data-testid="recipe-category">{ data.meals[0].strCategory }</p>
 
       <ul>
-        { ingrediente.map((item, index) => (
-          <>
-            <label
-              htmlFor={ item }
-              key={ index }
-              data-testid={ `${index}-ingredient-step` }
-            >
-              <input type="checkbox" value={ item } id={ item } />
-              { item }
+        { ingrediente.map((item, index) => {
+          if (line.includes(index)) {
+            return (
+              <>
+                <label
+                  id={ index }
+                  htmlFor={ item }
+                  key={ index }
+                  data-testid={ `${index}-ingredient-step` }
+                  style={ lineStyle }
+                >
+                  <input
+                    type="checkbox"
+                    value={ item }
+                    id={ item }
+                    onClick={ () => setLine(line.filter((e) => e !== index)) }
+                  />
+                  { item }
 
-            </label>
-            <br />
+                </label>
+                <br />
+              </>
+            );
+          } return (
+            <>
+              <label
+                id={ index }
+                htmlFor={ item }
+                key={ index }
+                data-testid={ `${index}-ingredient-step` }
+              >
+                <input
+                  type="checkbox"
+                  value={ item }
+                  id={ item }
+                  onClick={ () => setLine([...line, index]) }
+                />
+                { item }
 
-          </>))}
+              </label>
+              <br />
+
+            </>
+          );
+        })}
       </ul>
 
       <p data-testid="instructions">{ data.meals[0].strInstructions }</p>
@@ -124,6 +161,7 @@ export default function MealsInProgress({ data, pathname }) {
     </div>
   );
 }
+
 MealsInProgress.propTypes = {
   data: PropTypes.shape({ meals: PropTypes.obj }),
 }.isRequired;
