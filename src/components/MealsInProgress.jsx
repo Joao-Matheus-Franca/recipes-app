@@ -10,7 +10,21 @@ export default function MealsInProgress({ data, pathname }) {
     textDecorationColor: 'rgb(0,0,0)',
     textDecorationStyle: 'solid' };
 
-  const [line, setLine] = useState([]);
+  const verifyRecipes = () => {
+    const lastRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (lastRecipes === null) {
+      return [];
+    }
+    if (lastRecipes.meals === undefined) {
+      return [];
+    }
+    if (lastRecipes.meals[data.meals[0].idMeal] === undefined) {
+      return [];
+    }
+    return lastRecipes.meals[data.meals[0].idMeal];
+  };
+
+  const [line, setLine] = useState(verifyRecipes());
 
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.meals[0])
@@ -104,7 +118,7 @@ export default function MealsInProgress({ data, pathname }) {
 
       <ul>
         { ingrediente.map((item, index) => {
-          if (line.includes(index)) {
+          if (line.includes(item)) {
             return (
               <>
                 <label
@@ -116,9 +130,21 @@ export default function MealsInProgress({ data, pathname }) {
                 >
                   <input
                     type="checkbox"
+                    defaultChecked
                     value={ item }
                     id={ item }
-                    onClick={ () => setLine(line.filter((e) => e !== index)) }
+                    onClick={ () => {
+                      setLine(line.filter((e) => e !== item));
+                      const id = data.meals[0].idMeal;
+                      const lastRecipes = JSON
+                        .parse(localStorage.getItem('inProgressRecipes'));
+                      localStorage
+                        .setItem('inProgressRecipes', JSON
+                          .stringify({ ...lastRecipes,
+                            meals: {
+                              [id]: lastRecipes.meals[id]
+                                .filter((e) => e !== item) } }));
+                    } }
                   />
                   { item }
 
@@ -138,7 +164,15 @@ export default function MealsInProgress({ data, pathname }) {
                   type="checkbox"
                   value={ item }
                   id={ item }
-                  onClick={ () => setLine([...line, index]) }
+                  onClick={ () => {
+                    setLine([...line, item]);
+                    const lastRecipes = JSON
+                      .parse(localStorage.getItem('inProgressRecipes'));
+                    localStorage
+                      .setItem('inProgressRecipes', JSON
+                        .stringify({ ...lastRecipes,
+                          meals: { [data.meals[0].idMeal]: [...line, item] } }));
+                  } }
                 />
                 { item }
 
