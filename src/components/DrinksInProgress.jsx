@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import shareImage from '../images/shareIcon.svg';
@@ -187,14 +188,37 @@ export default function DrinksInProgress({ data }) {
 
       <p data-testid="instructions">{ data.drinks[0].strInstructions }</p>
 
-      <button
-        type="button"
-        data-testid="finish-recipe-btn"
-        className="btn_startRecife"
-        disabled={ line.length !== ingrediente.length }
-      >
-        Finish Recipe
-      </button>
+      <Link to="/done-recipes">
+        <button
+          type="button"
+          data-testid="finish-recipe-btn"
+          className="btn_startRecife"
+          disabled={ line.length !== ingrediente.length }
+          onClick={ () => {
+            const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+            const theDate = new Date();
+            const newRecipe = {
+              id: data.drinks[0].idDrink,
+              type: 'drink',
+              nationality: '',
+              category: data.drinks[0].strCategory,
+              alcoholicOrNot: data.drinks[0].strAlcoholic,
+              name: data.drinks[0].strDrink,
+              image: data.drinks[0].strDrinkThumb,
+              tags: [],
+              doneDate: theDate,
+            };
+            if (doneRecipes === null) {
+              return localStorage.setItem('doneRecipes', JSON.stringify([newRecipe]));
+            }
+            return localStorage
+              .setItem('doneRecipes', JSON.stringify([...doneRecipes, newRecipe]));
+          } }
+        >
+
+          Finish Recipe
+        </button>
+      </Link>
     </div>
   );
 }
