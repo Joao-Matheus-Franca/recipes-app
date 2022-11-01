@@ -5,7 +5,7 @@ import shareImage from '../images/shareIcon.svg';
 import favorite from '../images/blackHeartIcon.svg';
 import noFavorite from '../images/whiteHeartIcon.svg';
 
-export default function MealsInProgress({ data, pathname }) {
+export default function MealsInProgress({ data }) {
   const lineStyle = { textDecorationLine: 'line-through',
     textDecorationColor: 'rgb(0,0,0)',
     textDecorationStyle: 'solid' };
@@ -84,7 +84,7 @@ export default function MealsInProgress({ data, pathname }) {
         data-testid="share-btn"
         src={ shareImage }
         onClick={ () => {
-          copy(`http://localhost:3000${pathname}`);
+          copy(`http://localhost:3000/meals/${data.meals[0].idMeal}`);
           setLink(true);
         } }
       >

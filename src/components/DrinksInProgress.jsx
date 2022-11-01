@@ -5,7 +5,7 @@ import shareImage from '../images/shareIcon.svg';
 import favorite from '../images/blackHeartIcon.svg';
 import noFavorite from '../images/whiteHeartIcon.svg';
 
-export default function DrinksInProgress({ data, pathname }) {
+export default function DrinksInProgress({ data }) {
   const lineStyle = { textDecorationLine: 'line-through',
     textDecorationColor: 'rgb(0,0,0)',
     textDecorationStyle: 'solid' };
@@ -85,7 +85,7 @@ export default function DrinksInProgress({ data, pathname }) {
         data-testid="share-btn"
         src={ shareImage }
         onClick={ () => {
-          copy(`http://localhost:3000${pathname}`);
+          copy(`http://localhost:3000/drinks/${data.drinks[0].idDrink}`);
           setLink(true);
         } }
       >
