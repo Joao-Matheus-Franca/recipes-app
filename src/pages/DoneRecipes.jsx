@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import ProfileBtn from '../components/ProfileBtn';
+import shareBtn from '../images/shareIcon.svg';
 
 export default function DoneRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -12,7 +13,7 @@ export default function DoneRecipes() {
       </Header>
       <button type="button" data-testid="filter-by-all-btn">All</button>
       <button type="button" data-testid="filter-by-meal-btn">Meals</button>
-      <button type="button" data-testid="filter-by-drink-btn">Meals</button>
+      <button type="button" data-testid="filter-by-drink-btn">Drinks</button>
       {doneRecipes && doneRecipes.map((r, i) => (
         <div key={ r.id }>
           <img
@@ -20,16 +21,26 @@ export default function DoneRecipes() {
             alt="Imagem da receitas"
             data-testid={ `${i}-horizontal-image` }
           />
-          <p data-testid={ `${i}-horizontal-top-text` }>{ r.category }</p>
+          {r.type === 'meal' ? (
+            <p data-testid={ `${i}-horizontal-top-text` }>
+              { `${r.nationality} - ${r.category}` }
+            </p>
+          )
+            : (
+              <p data-testid={ `${i}-horizontal-top-text` }>
+                { `${r.alcoholicOrNot}` }
+              </p>
+            )}
           <p data-testid={ `${i}-horizontal-name` }>{ r.name }</p>
           <p data-testid={ `${i}-horizontal-done-date` }>{ r.doneDate }</p>
           <button
             type="button"
             data-testid={ `${i}-horizontal-share-btn` }
+            src={ shareBtn }
           >
-            Compartilhar
+            <img src={ shareBtn } alt="Botão para compartilhar" />
           </button>
-          { r.tags.map((t, ix) => (
+          { r.tags.filter((e, ix) => ix < 2).map((t, ix) => (
             <ul key={ ix }>
               <li data-testid={ `${i}-${t}-horizontal-tag` }>{ t }</li>
             </ul>))}
