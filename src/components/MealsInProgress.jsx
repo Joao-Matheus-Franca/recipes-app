@@ -189,6 +189,8 @@ export default function MealsInProgress({ data }) {
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        className="btn_startRecife"
+        disabled={ line.length !== ingrediente.length }
       >
         Finish Recipe
       </button>
