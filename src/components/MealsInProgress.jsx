@@ -1,16 +1,31 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import shareImage from '../images/shareIcon.svg';
 import favorite from '../images/blackHeartIcon.svg';
 import noFavorite from '../images/whiteHeartIcon.svg';
 
-export default function MealsInProgress({ data, pathname }) {
+export default function MealsInProgress({ data }) {
   const lineStyle = { textDecorationLine: 'line-through',
     textDecorationColor: 'rgb(0,0,0)',
     textDecorationStyle: 'solid' };
 
-  const [line, setLine] = useState([]);
+  const verifyRecipes = () => {
+    const lastRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (lastRecipes === null) {
+      return [];
+    }
+    if (lastRecipes.meals === undefined) {
+      return [];
+    }
+    if (lastRecipes.meals[data.meals[0].idMeal] === undefined) {
+      return [];
+    }
+    return lastRecipes.meals[data.meals[0].idMeal];
+  };
+
+  const [line, setLine] = useState(verifyRecipes());
 
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.meals[0])
@@ -70,7 +85,7 @@ export default function MealsInProgress({ data, pathname }) {
         data-testid="share-btn"
         src={ shareImage }
         onClick={ () => {
-          copy(`http://localhost:3000${pathname}`);
+          copy(`http://localhost:3000/meals/${data.meals[0].idMeal}`);
           setLink(true);
         } }
       >
@@ -104,7 +119,7 @@ export default function MealsInProgress({ data, pathname }) {
 
       <ul>
         { ingrediente.map((item, index) => {
-          if (line.includes(index)) {
+          if (line.includes(item)) {
             return (
               <>
                 <label
@@ -116,9 +131,21 @@ export default function MealsInProgress({ data, pathname }) {
                 >
                   <input
                     type="checkbox"
+                    defaultChecked
                     value={ item }
                     id={ item }
-                    onClick={ () => setLine(line.filter((e) => e !== index)) }
+                    onClick={ () => {
+                      setLine(line.filter((e) => e !== item));
+                      const id = data.meals[0].idMeal;
+                      const lastRecipes = JSON
+                        .parse(localStorage.getItem('inProgressRecipes'));
+                      localStorage
+                        .setItem('inProgressRecipes', JSON
+                          .stringify({ ...lastRecipes,
+                            meals: {
+                              [id]: lastRecipes.meals[id]
+                                .filter((e) => e !== item) } }));
+                    } }
                   />
                   { item }
 
@@ -138,7 +165,15 @@ export default function MealsInProgress({ data, pathname }) {
                   type="checkbox"
                   value={ item }
                   id={ item }
-                  onClick={ () => setLine([...line, index]) }
+                  onClick={ () => {
+                    setLine([...line, item]);
+                    const lastRecipes = JSON
+                      .parse(localStorage.getItem('inProgressRecipes'));
+                    localStorage
+                      .setItem('inProgressRecipes', JSON
+                        .stringify({ ...lastRecipes,
+                          meals: { [data.meals[0].idMeal]: [...line, item] } }));
+                  } }
                 />
                 { item }
 
@@ -152,12 +187,37 @@ export default function MealsInProgress({ data, pathname }) {
 
       <p data-testid="instructions">{ data.meals[0].strInstructions }</p>
 
-      <button
-        type="button"
-        data-testid="finish-recipe-btn"
-      >
-        Finish Recipe
-      </button>
+      <Link to="/done-recipes">
+        <button
+          type="button"
+          data-testid="finish-recipe-btn"
+          className="btn_startRecife"
+          disabled={ line.length !== ingrediente.length }
+          onClick={ () => {
+            const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+            const theDate = new Date();
+            const newRecipe = {
+              id: data.meals[0].idMeal,
+              nationality: data.meals[0].strArea,
+              name: data.meals[0].strMeal,
+              image: data.meals[0].strMealThumb,
+              category: data.meals[0].strCategory,
+              tags: data.meals[0].strTags.split(','),
+              alcoholicOrNot: '',
+              type: 'meal',
+              doneDate: theDate,
+            };
+            if (doneRecipes === null) {
+              return localStorage.setItem('doneRecipes', JSON.stringify([newRecipe]));
+            }
+            return localStorage
+              .setItem('doneRecipes', JSON.stringify([...doneRecipes, newRecipe]));
+          } }
+        >
+
+          Finish Recipe
+        </button>
+      </Link>
     </div>
   );
 }

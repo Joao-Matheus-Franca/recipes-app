@@ -1,16 +1,31 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import shareImage from '../images/shareIcon.svg';
 import favorite from '../images/blackHeartIcon.svg';
 import noFavorite from '../images/whiteHeartIcon.svg';
 
-export default function DrinksInProgress({ data, pathname }) {
+export default function DrinksInProgress({ data }) {
   const lineStyle = { textDecorationLine: 'line-through',
     textDecorationColor: 'rgb(0,0,0)',
     textDecorationStyle: 'solid' };
 
-  const [line, setLine] = useState([]);
+  const verifyRecipes = () => {
+    const lastRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (lastRecipes === null) {
+      return [];
+    }
+    if (lastRecipes.meals === undefined) {
+      return [];
+    }
+    if (lastRecipes.meals[data.drinks[0].idDrink] === undefined) {
+      return [];
+    }
+    return lastRecipes.meals[data.drinks[0].idDrink];
+  };
+
+  const [line, setLine] = useState(verifyRecipes());
 
   const ingredientes = (initialData) => {
     const recipes = Object.entries(initialData.drinks[0])
@@ -71,7 +86,7 @@ export default function DrinksInProgress({ data, pathname }) {
         data-testid="share-btn"
         src={ shareImage }
         onClick={ () => {
-          copy(`http://localhost:3000${pathname}`);
+          copy(`http://localhost:3000/drinks/${data.drinks[0].idDrink}`);
           setLink(true);
         } }
       >
@@ -105,7 +120,7 @@ export default function DrinksInProgress({ data, pathname }) {
 
       <ul>
         { ingrediente.map((item, index) => {
-          if (line.includes(index)) {
+          if (line.includes(item)) {
             return (
               <>
                 <label
@@ -117,9 +132,21 @@ export default function DrinksInProgress({ data, pathname }) {
                 >
                   <input
                     type="checkbox"
+                    defaultChecked
                     value={ item }
                     id={ item }
-                    onClick={ () => setLine(line.filter((e) => e !== index)) }
+                    onClick={ () => {
+                      setLine(line.filter((e) => e !== item));
+                      const id = data.drinks[0].idDrink;
+                      const lastRecipes = JSON
+                        .parse(localStorage.getItem('inProgressRecipes'));
+                      localStorage
+                        .setItem('inProgressRecipes', JSON
+                          .stringify({ ...lastRecipes,
+                            meals: {
+                              [id]: lastRecipes.drinks[id]
+                                .filter((e) => e !== item) } }));
+                    } }
                   />
                   { item }
 
@@ -139,7 +166,15 @@ export default function DrinksInProgress({ data, pathname }) {
                   type="checkbox"
                   value={ item }
                   id={ item }
-                  onClick={ () => setLine([...line, index]) }
+                  onClick={ () => {
+                    setLine([...line, item]);
+                    const lastRecipes = JSON
+                      .parse(localStorage.getItem('inProgressRecipes'));
+                    localStorage
+                      .setItem('inProgressRecipes', JSON
+                        .stringify({ ...lastRecipes,
+                          meals: { [data.drinks[0].idDrink]: [...line, item] } }));
+                  } }
                 />
                 { item }
 
@@ -153,12 +188,37 @@ export default function DrinksInProgress({ data, pathname }) {
 
       <p data-testid="instructions">{ data.drinks[0].strInstructions }</p>
 
-      <button
-        type="button"
-        data-testid="finish-recipe-btn"
-      >
-        Finish Recipe
-      </button>
+      <Link to="/done-recipes">
+        <button
+          type="button"
+          data-testid="finish-recipe-btn"
+          className="btn_startRecife"
+          disabled={ line.length !== ingrediente.length }
+          onClick={ () => {
+            const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+            const theDate = new Date();
+            const newRecipe = {
+              id: data.drinks[0].idDrink,
+              type: 'drink',
+              nationality: '',
+              category: data.drinks[0].strCategory,
+              alcoholicOrNot: data.drinks[0].strAlcoholic,
+              name: data.drinks[0].strDrink,
+              image: data.drinks[0].strDrinkThumb,
+              tags: [],
+              doneDate: theDate,
+            };
+            if (doneRecipes === null) {
+              return localStorage.setItem('doneRecipes', JSON.stringify([newRecipe]));
+            }
+            return localStorage
+              .setItem('doneRecipes', JSON.stringify([...doneRecipes, newRecipe]));
+          } }
+        >
+
+          Finish Recipe
+        </button>
+      </Link>
     </div>
   );
 }
