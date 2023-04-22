@@ -24,6 +24,7 @@
 <a href="https://react.dev/">React</a>,
 <a href="https://reactrouter.com/en/main">React Router</a>, 
 manipulação do estado global dos componentes com <a href="https://react.dev/learn/passing-data-deeply-with-context">Context</a> e ciclo de vida do React
+* Lidar com o fluxo complexo do aplicativo capaz de consumir duas API alternadamente a partir das rotas
 ## 👨‍💻 Como executar: 
 ⚠️ Recomenda-se o download e utilização do Visual Studio Code e NodeJS ⚠️
 1. Realizar o clone do repositório: ``` git clone git@github.com:Joao-Matheus-Franca/recipes-app.git ```
